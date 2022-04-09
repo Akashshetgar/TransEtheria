@@ -1,3 +1,3 @@
 # music-app-bc
 
-This project is made during KJSSCE Hack 6.0
+This project is made during KJSCE Hack 6.0
