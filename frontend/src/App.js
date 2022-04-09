@@ -1,30 +1,35 @@
-import logo from './logo.svg';
+import React, {useContext} from 'react';
+
 import './App.css';
-import Registration from './components/Registration';
-import Home from './components/Home';
-import Login from './components/Login';
+
 import { Route, Routes } from 'react-router-dom';
+import { TransactionContext } from "./context/TransactionContext";
+
 
 
 function App() {
 
+   
+  const {connectWallet, currentAccount, handleChange, sendTransaction,formData} = useContext(TransactionContext);
   const Input = ({placeholder,name,type,value,handleChange}) => (
     <input 
     placeholder={placeholder}
     type={type}
     step="0.0001" 
     value={value}
-    onChange={(e)=>handleChange(e, name)}
+    onChange={(event)=>handleChange(event, name)}
     className="my-2 w-full rounded-small p-2 outline-none bg-trasparent text-white border-none text-sm white-glassmorphism"
     />
   );
+  
 
-  const connectWallet = () => {
-
-  }
-
-  const handleSubmit = () => {
-
+  const handleSubmit = (event) => {
+    const {addressTo,amount,keyword,message} = formData;
+      event.preventDefault();
+      if(!addressTo || !amount || !keyword || !message){
+        return;
+      }  
+      sendTransaction();
   }
 
   return (
@@ -36,9 +41,11 @@ function App() {
         <div className="w-120 p-2 white-glassmorphism text-gradient rounded-xl">
           <p className="font-semibold text-lg">Etherium Transactions Made Easy</p>
         </div>
-        <button type='button' onClick={connectWallet} className="flex flex-row justify-center items-center my-5 bg-gray-500 p-2 w-60 rounded-full cursor-pointer hover:bg-gray-700">
+        {!currentAccount &&
+        (<button type='button' onClick={connectWallet} className="flex flex-row justify-center items-center my-5 bg-gray-500 p-2 w-60 rounded-full cursor-pointer hover:bg-gray-700">
           <p className="text-white text-base font-seimcolon">Connect Wallet</p> 
-        </button>
+        </button>)
+        }
       </div>
       <div class="snap-start w-screen h-screen flex flex-col space-y-4 justify-center items-center">
         <div className='flex flex-col flex-1 items-center justify-start w-full md:mt-0 mt-10'>
@@ -62,10 +69,11 @@ function App() {
           </div>
 
           <div className='p-5 sm:w-95 w-1/2 flex flex-col justify-start items-center blue-glassmorphism'>
-            <Input placeholder="Address To" name="addressTo" type="text" handleChange={()=>{}}/>
-            <Input placeholder="Amount(ETH)" name="amount" type="number" handleChange={()=>{}}/>
-            <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={()=>{}}/>
-            <Input placeholder="Enter Message" name="message" type="text" handleChange={()=>{}}/>
+            <Input placeholder="Address To" name="addressTo" type="text" handleChange={handleChange} value={formData.addressTo}/>
+            <Input placeholder="Amount(ETH)" name="amount" type="number" handleChange={handleChange} value={formData.amount}/>
+            <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={handleChange} value={formData.keyword}/>
+            <Input placeholder="Enter Message" name="message" type="text" handleChange={handleChange} value={formData.message}/>
+            
 
             <div className="h-1px w-full bg-gray-400 my-2"/>
 
