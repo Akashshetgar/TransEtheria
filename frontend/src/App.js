@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-
+import { useEffect } from 'react';
 import './App.css';
 import {SiEthereum} from 'react-icons/si';
 import {BsInfoCircle} from 'react-icons/bs';
@@ -15,11 +15,17 @@ import useFetch from './hooks/useFetch';
 
 import { Route, Routes } from 'react-router-dom';
 import { TransactionContext } from "./context/TransactionContext";
+import alanBtn from '@alan-ai/alan-sdk-web';
 
+const alanKey='a1a425a4a54a1734a6c1e6a6410ba5052e956eca572e1d8b807a3e2338fdd0dc/stage';
 
 
 function App() {
-
+  useEffect(()=> {
+    alanBtn({
+      key: alanKey,
+    })
+  },[])
    
   const {connectWallet, currentAccount, handleChange, sendTransaction,formData, transactions, isLoading} = useContext(TransactionContext);
   const Input = ({placeholder,name,type,value,handleChange}) => (
@@ -110,7 +116,7 @@ function App() {
           <p className="font-semibold text-[50px] sm:text-[100px]">TransEtheria</p>
         </div>
         <div className="w-120 p-2 text-gradient rounded-xl">
-          <p className="font-semibold text-lg">Etherium Transactions Made Easy</p>
+          <p className="font-semibold text-lg">Ethereum Transactions Made Easy</p>
         </div>
         {!currentAccount &&
         (<button type='button' onClick={connectWallet} className="flex flex-row justify-center items-center my-5 bg-gray-500 p-2 w-60 rounded-full cursor-pointer hover:bg-gray-700">
@@ -124,16 +130,16 @@ function App() {
             <div className="flex justify-between flex-col w-full h-full">
               <div className="flex flex-row items-start justify-between">
                 <div className="w-10 h-10 border-2 rounded-full border-white flex justify-center items-center">
-                  {/* <SiEtherium fontSize={21} color="#ffff" /> */}
+                  <SiEthereum fontSize={21} color="#ffff" />
                 </div>
-                {/* <BsInfoCircle fontSize={17} color="#fff" /> */}
+                <BsInfoCircle fontSize={17} color="#fff" />
               </div>
               <div>
                 <p className="text-white font-light index-sm">
-                  0xgaudygaygdu.....auwgyduyagwd
+                  {shortenAddress(currentAccount)}
                 </p>
                 <p className="text-white font-semibold text-lg mt-1">
-                  Etherium
+                  Ethereum
                 </p>
               </div>
             </div>
