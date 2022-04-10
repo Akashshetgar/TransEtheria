@@ -38,8 +38,14 @@ const createEthereumContract = () => {
             const availableTransactions = await transactionsContract.get();
 
             console.log(availableTransactions);
-    
-            const structuredTransactions = availableTransactions.map((transaction) => ({
+            const accounts = await ethereum.request({method: 'eth_accounts'});
+            const structuredTransactions = availableTransactions.filter(function(tr){
+              console.log(tr.receiver);
+              console.log("CR:",accounts[0]);
+              return ((tr.receiver.toLowerCase() === accounts[0]) || (tr.from.toLowerCase() === accounts[0]));
+
+            })
+            .map((transaction) => ({
               addressTo: transaction.receiver,
               addressFrom: transaction.from,
               timestamp: new Date(transaction.timestamo.toNumber() * 1000).toLocaleString(),
