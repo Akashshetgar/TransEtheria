@@ -21,7 +21,7 @@ import { TransactionContext } from "./context/TransactionContext";
 function App() {
 
    
-  const {connectWallet, currentAccount, handleChange, sendTransaction,formData} = useContext(TransactionContext);
+  const {connectWallet, currentAccount, handleChange, sendTransaction,formData, transactions, isLoading} = useContext(TransactionContext);
   const Input = ({placeholder,name,type,value,handleChange}) => (
     <input 
     placeholder={placeholder}
@@ -73,6 +73,7 @@ function App() {
               <p className="text-white text-base">Message: {message}</p>
               </>
             )}
+            <p className="text-white text-base">Keyword: {keyword}</p>
 
               {/* <img src={gifUrl || url}
               alt='gif'
@@ -147,7 +148,7 @@ function App() {
 
             <div className="h-1px w-full bg-gray-400 my-2"/>
 
-            {false?(
+            {isLoading?(
               // <Loader />
               <div />
             ):(<button type="button" onClick={handleSubmit} className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] rounded-full cursor-pointer">Send Now</button>)}
@@ -202,7 +203,7 @@ function App() {
               </h1>
             )}
             <div className="flex flex-wrap justify-center items-center mt-10">
-              {dummyData.reverse().map((transaction,i)=>(
+              {transactions.reverse().map((transaction,i)=>(
                 <TransactionCard key={i} {...transaction}/>
               ))}
 
